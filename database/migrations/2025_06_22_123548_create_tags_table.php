@@ -15,7 +15,7 @@ class CreateTagsTable extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name', 20)->collation('utf8mb4_bin')->unique();
+            $table->string('name', 20);
             $table->timestamps();
         });
     }
