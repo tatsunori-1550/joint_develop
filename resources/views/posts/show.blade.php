@@ -96,7 +96,7 @@
                 </div>
                 @if ($post->image)
                     <div class="text-center">
-                        <img src="{{ asset('storage/' . $post->image) }}"
+                        <img src="{{ $post->image }}"
                             class="img-fluid rounded shadow-sm mb-3"
                             style="max-height: 400px; object-fit: contain; background-color: #f8f9fa;"
                             alt="投稿画像">

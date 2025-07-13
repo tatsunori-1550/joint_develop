@@ -39,7 +39,7 @@
                     @php
                         $defaultImage = config('constants.no_image_path');
                         $imageUrl = $post->image
-                            ? asset('storage/' . $post->image)
+                            ? $post->image
                             : asset($defaultImage);
                     @endphp
                     <a href="{{ route('posts.show', $post->id) }}">

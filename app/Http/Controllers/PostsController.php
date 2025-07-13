@@ -9,6 +9,7 @@ use App\Tag;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\SearchRequest;
 use Illuminate\Support\Facades\Auth;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class PostsController extends Controller
 {
@@ -75,9 +76,9 @@ class PostsController extends Controller
         $post->content   = $request->input('content');
         $post->user_id   = Auth::id();
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('post_images', 'public');
-            $post->image = $path;
-        }
+        $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+        $post->image = $uploadedFileUrl;
+    }
         $post->lat = $request->input('lat');
         $post->lng = $request->input('lng');
         $post->save();
@@ -107,10 +108,10 @@ class PostsController extends Controller
         $post->lat = $request->input('lat');
         $post->lng = $request->input('lng');
         if ($request->hasFile('image')) {
-            $post->deleteImage();
-            $path = $request->file('image')->store('post_images', 'public');
-            $post->image = $path;
-        }
+        $post->deleteImage(); // これがローカルファイル削除なら、不要になるかも
+        $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+        $post->image = $uploadedFileUrl;
+    }
         $post->save();
         $rawTags = $request->input('tags');
         $tagNames = Tag::parseTagNames($rawTags);
