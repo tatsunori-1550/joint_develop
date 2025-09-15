@@ -10,7 +10,7 @@ URL: [Car Garage Navigator](https://car-garage-navigator.onrender.com)
 ## サイトイメージ
 ![ホーム画面](readme_images/home.png)
 
-![投稿詳細画面](readme_images/post_details.png)
+![投稿詳細画面](readme_images/post_detailes.png)
 
 
 ## 主な機能
@@ -70,11 +70,7 @@ URL: [Car Garage Navigator](https://car-garage-navigator.onrender.com)
 - **GitHub**：チームでのバージョン管理／レビュー用
 - **Docker**：ローカル開発環境を統一
 - **GitHub Actions（CI/CD）**：将来的に自動デプロイ導入予定
-## テーブル定義
-本アプリで使用している主なテーブルの定義は以下の通りです：
-![テーブル定義1](readme_images/db_schema1.png)
-![テーブル定義2](readme_images/db_schema2.png)
-![テーブル定義3](readme_images/db_schema3.png)
+
 
 ## 担当と役割（@たつのり）
 このリポジトリは、チーム開発で制作したアプリをもとに、
