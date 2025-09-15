@@ -1,78 +1,128 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# 修理どこがいい？クルマの名医ナビ（Car Garage Navigator）
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 
-## About Laravel
+信頼できる整備工場を口コミで探せるWebアプリです。
+4人チームで開発し、このリポジトリはたつのりのポートフォリオ用に管理しています。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+URL: [Car Garage Navigator](https://car-garage-navigator.onrender.com)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## サイトイメージ
+![ホーム画面](readme_images/home.png)
 
-## Learning Laravel
+![投稿詳細画面](readme_images/post_details.png)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 主な機能
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- ユーザー機能（登録・ログイン・編集・退会）
+- フォロー機能 & タイムライン切替
+- 投稿（整備工場の口コミ投稿）
+- 投稿への画像添付
+- タグ機能（表示・投稿・編集・削除・検索）
+- レビュー機能（表示・投稿・編集・削除）
+- 星評価（項目別の5段階評価）
+- 投稿検索（キーワード・タグ）
+- Google Mapsでの店舗位置表示
+- チャットボット連携
+- 操作完了メッセージ表示 (フラッシュメッセージ)
+- レスポンシブ対応（スマホ対応含む）
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
 
-## Contributing
+## 使用技術
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### バックエンド
+- Laravel 6（PHP）
+- 本番：PostgreSQL（Render内DB）
+- ローカル：MySQL + Adminer
 
-## Code of Conduct
+### フロントエンド
+- Blade, Sass（SCSS記法）, Bootstrap 4, FontAwesome, JavaScript
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 環境構築・インフラ
+- Docker（ローカル開発）
+- MySQL + Adminer（ローカルDB構成／Docker上で動作）
+- Render（本番ホスティング）
+- Render PostgreSQL（本番DBとして使用）
+- Laravel ローカルストレージ（開発環境で画像保存に使用）
+- Cloudinary（画像ストレージ／本番環境）
+- HTTPS（Render による自動SSL対応）
+- GitHub Actions（将来的にCI/CD構成を導入予定）
 
-## Security Vulnerabilities
+### 外部サービス・API
+- Google Maps API
+- Botpress Chatbot
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 画像アップロードについて
+投稿画像のアップロードには、環境ごとにストレージを切り替えています。
+- **本番環境**：Cloudinary を使用し、投稿画像をクラウドで配信
+- **ローカル環境**：Laravel のローカルストレージ（`storage/app/public`）を利用し、`php artisan storage:link` によって公開ディレクトリと連携
+環境に応じた設定は `.env` ファイルで管理しています。
+## アーキテクチャ構成図
+本アプリは、以下のような構成で開発・公開を行っています。
+![アプリ構成図](readme_images/architecture.png)
+- **User**：ブラウザからアクセスするユーザー
+- **Render によるSSL対応**：HTTPS化により安全な通信を実現
+- **Render**：Laravelアプリをホスティング（ルーティング／認証／データ処理など）
+- **PostgreSQL**：Render内のDBとして利用
+- **Cloudinary**：投稿画像のアップロード・配信を担当
+- **GitHub**：チームでのバージョン管理／レビュー用
+- **Docker**：ローカル開発環境を統一
+- **GitHub Actions（CI/CD）**：将来的に自動デプロイ導入予定
+## テーブル定義
+本アプリで使用している主なテーブルの定義は以下の通りです：
+![テーブル定義1](readme_images/db_schema1.png)
+![テーブル定義2](readme_images/db_schema2.png)
+![テーブル定義3](readme_images/db_schema3.png)
 
-## License
+## 担当と役割（@たつのり）
+このリポジトリは、チーム開発で制作したアプリをもとに、
+私（たつのり）が実装・調整を担当した内容をまとめたポートフォリオ用のものです。
+以下の機能・領域を中心に担当しました：
+- ユーザーテーブルのマイグレーション・シーダー作成
+- トップページの投稿表示(アバター、ユーザー名、投稿日時実装)
+- 投稿新規作成
+- トップページのレイアウト作成
+- フォロー機能：ユーザー詳細ページにボタン移設、フォロー一覧、フォロワー数の表示
+- フォローによるタイムライン変更（フォローしているユーザーの投稿表示）
+- 画像アップロード：Cloudinary連携（本番環境）
+- Google Maps API：店舗検索・地図表示
+- Renderデプロイ (https対応／SSL証明書自動発行）
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 学び・工夫した点
+- コントローラ・ビュー・モデルを整理しながら実装を進め、機能の責務を明確に分離することで、保守しやすい構成を意識しました。
+- 投稿・フォロー・画像などの関連機能を、Eloquentのリレーションを活用して整理し、モデル設計とロジックの共通化によってデータ処理を効率化しました。
+- バリデーションやアクセサ、Eloquentの機能、ヘルパー関数を積極的に活用し、コードの可読性とデータの整合性を高めました。
+- 複数機能が連携する場面では、命名の一貫性やロジックの整理を意識し、可読性と保守性を高めました。
+- Google Maps APIサービスを利用して、ユーザー体験の向上を意識しました。
+- 機能の追加や修正がしやすいよう、構造の見通しやすさと命名の統一を常に意識しました。
+- データベース操作では、無駄なクエリやN+1問題を回避し、パフォーマンスとスケーラビリティを意識した実装を心がけました。
+
+## GitHubの活用
+- Gitフローに沿って、機能ごとにブランチを細かく分けて開発を進めました。
+- ブランチ名は feature/tatsunori/create_new_post のようにルールを統一し、どんな作業かすぐに分かるように心がけました。
+- 実装のたびにこまめにコミットし、プルリクエストを通じてチームとしっかり連携。マージ前には、コードの差分確認や動作確認も丁寧に行いました。
+- 担当したブランチに関して、それぞれの進捗を整理しながら、スムーズな開発を意識して取り組みました。
+- コンフリクトが起きた際は、他のメンバーの変更内容を確認しながら、内容がぶつからないよう丁寧に統合しました。マージの順番やまとめ方にも気を配り、チーム全体のコードが安定するよう心がけました。
+- 最終的にRenderでのデプロイを行い、チーム全体が本番環境で動作確認を行える体制を整備しました。
+
+## チームメンバー
+- たつのり← 本リポジトリの管理者（ポートフォリオ用に個人で運用）
+- ちゃこ
+- なり
+- 清水
+
+## ブランチについて
+- develop_b_satsuki_sna: チーム開発で完成した全機能統合版
+- release/1.0: ポートフォリオ向けに整理・調整したブランチ（Cloudinary連携・本番構成・README整備など）
+※このREADMEは release/1.0 ブランチで管理されています。
+
+## 制作期間
+- 2ヶ月
+## 注意事項
+掲載情報はすべてダミーであり、実在する店舗・人物・サービスとは一切関係ありません。
+※このアプリは Laravel フレームワークをベースに開発しています。
+
+
+cense](https://opensource.org/licenses/MIT).
