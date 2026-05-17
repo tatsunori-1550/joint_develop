@@ -6,20 +6,20 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-body flex-grow-1">
-                    <div class="d-flex align-items-center mb-3">
-                        <img src="{{ Gravatar::src($post->user->email,55) }}" class="rounded-circle mr-3" alt="ユーザのアバター画像">
-                        <div>
-                        <p class="mb-1 font-weight-bold text-break">
+                    <div class="d-flex flex-column mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="{{ Gravatar::src($post->user->email,55) }}"
+                            class="rounded-circle mr-3"
+                            alt="ユーザのアバター画像">
                             <a href="{{ route('user.show', $post->user->id) }}"
-                            class="text-dark fw-bold"
-                            style="text-decoration: none; transition: all 0.2s ease;"
-                            onmouseover="this.style.textDecoration='underline';"
-                            onmouseout="this.style.textDecoration='none';">
+                                class="text-dark fw-bold"
+                                style="text-decoration: none;">
                                 {{ $post->user->name }}
                             </a>
-                        </p>
+                        </div>
+                        <div class="d-flex flex-wrap align-items-center">
                             @if (Auth::check() && Auth::id() !== $post->user->id)
-                                <div>
+                                <div class="mr-2 mb-2">
                                     @if (Auth::user()->isFollowing($post->user->id))
                                         <form method="POST" action="{{ route('unfollow', $post->user->id) }}">
                                             @csrf
@@ -30,6 +30,22 @@
                                         <form method="POST" action="{{ route('follow', $post->user->id) }}">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-outline-primary">フォローする</button>
+                                        </form>
+                                    @endif
+                                </div>
+                            @endif
+                            @if (Auth::check() && Auth::id() !== $post->user_id)
+                                <div class="mb-2">
+                                    @if (Auth::user()->isLiking($post->id))
+                                        <form method="POST" action="{{ route('posts.unlike', $post->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">いいね解除</button>
+                                        </form>
+                                    @else
+                                        <form method="POST" action="{{ route('posts.like', $post->id) }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-primary">いいね</button>
                                         </form>
                                     @endif
                                 </div>
@@ -103,7 +119,7 @@
                             @endforeach
                         </div>
                     @endif
-                    <p class="text-muted small mb-1">レビュー {{ $post->reviews_count }} 件</p>
+                    <p class="text-muted small mb-1">レビュー {{ $post->reviews_count }}・ いいね {{ $post->likes_count }} 件</p>
                     <p class="text-muted small">{{ $post->created_at }}</p>
                 </div>
             </div>

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -49,6 +48,11 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
+    public function likes()
+    {
+    return $this->hasMany(Like::class);
+    }
+
     public function followers()
     {
         return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id')
@@ -60,6 +64,37 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id')
             ->withTimestamps();
     }
+
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'likes', 'user_id', 'post_id')
+            ->withTimestamps();
+    }
+
+    public function isLiking($post_id)
+    {
+        return $this->likedPosts()->where('posts.id', $post_id)->exists();
+    }
+
+    public function like($post_id)
+    {
+        if ($this->isLiking($post_id)) {
+            return false;
+        }
+
+         $this->likedPosts()->attach($post_id);
+         return true;
+    }
+
+    public function unlike($post_id)
+    {
+        if (! $this->isLiking($post_id)) {
+            return false;
+        }   
+
+        $this->likedPosts()->detach($post_id);
+            return true;
+    }
     
     public function follow($id)
     {
@@ -68,6 +103,7 @@ class User extends Authenticatable
             return false;
         }    
         $this->followings()->attach($id);
+
         return true;
     }   
 
@@ -76,8 +112,10 @@ class User extends Authenticatable
         if ($this->isFollowing($id))  
         {
             $this->followings()->detach($id);
+
             return true;
         }
+
         return false;  
     }
 
@@ -90,6 +128,7 @@ class User extends Authenticatable
     {
         $countFollowings = $this->followings()->count();
         $countFollowers = $this->followers()->count();
+        
         return [
             'countPosts' => $this->posts()->count(),
             'countFollowings' => $countFollowings,

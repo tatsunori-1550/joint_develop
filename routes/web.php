@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', 'PostsController@index')->name('posts.index');
 Route::view('about', 'about.about')->name('about.show');
 
@@ -37,6 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('', 'UsersController@update')->name('user.update');
         Route::delete('', 'UsersController@destroy')->name('user.delete');
     });
+
     // 新規投稿、編集、更新、削除
     Route::prefix('posts')->group(function () {
         Route::get('create', 'PostsController@create')->name('posts.create');
@@ -44,19 +47,28 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('{id}/edit', 'PostsController@edit')->name('posts.edit'); 
         Route::put('{id}', 'PostsController@update')->name('posts.update');
         Route::delete('{id}', 'PostsController@destroy')->name('posts.delete');
-    }); 
+    });
+
     // レビュー
     Route::group(['prefix' => 'posts/{post_id}/reviews'], function () {
         Route::post('', 'ReviewsController@store')->name('reviews.store');
         Route::get('{review_id}/edit', 'ReviewsController@edit')->name('reviews.edit');
         Route::put('{review_id}', 'ReviewsController@update')->name('reviews.update');
+        Route::delete('reviews/{review_id}', 'ReviewsController@destroy')->name('reviews.delete');
     });
-    Route::delete('reviews/{review_id}', 'ReviewsController@destroy')->name('reviews.delete');
+
+    // いいね
+    Route::group(['prefix' => 'posts/{id}'], function () {
+        Route::post('like', 'LikeController@store')->name('posts.like');
+        Route::delete('unlike', 'LikeController@destroy')->name('posts.unlike');
+    });
+
     //フォロー・フォロー解除
     Route::group(['prefix' => 'users/{id}'], function () {
         Route::post('follow', 'FollowController@store')->name('follow');
         Route::delete('unfollow', 'FollowController@destroy')->name('unfollow');
     });
+
     //フォロー中・フォロワー一覧
     Route::get('users/{id}/followings', 'UsersController@followings')->name('users.followings');
     Route::get('users/{id}/followers', 'UsersController@followers')->name('users.followers');  

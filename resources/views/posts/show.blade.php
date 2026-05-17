@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', '投稿の詳細とレビュー | クルマの名医ナビ')
-@section('meta_description', '整備工場の詳細な投稿内容とレビューの一覧を確認できるページです。利用者の評価や体験談をもとに信頼できる工場を見つけましょう。')
 @section('content')
     <div class="container">
         <div class="mx-auto" style="max-width: 700px; width: 100%;">
@@ -8,9 +7,9 @@
                 <h4 class="fw-bold border-bottom pb-2 mb-3">
                     <i class="fas fa-user-circle me-2"></i>
                     <a href="{{ route('user.show', $post->user->id) }}" class="text-dark fw-bold"
-                    style="text-decoration: none; transition: all 0.2s ease;"
-                    onmouseover="this.style.textDecoration='underline';"
-                    onmouseout="this.style.textDecoration='none';">
+                        style="text-decoration: none; transition: all 0.2s ease;"
+                        onmouseover ="this.style.textDecoration='underline';"
+                        onmouseout ="this.style.textDecoration='none';">
                         {{ $post->user->name }}
                     </a>
                     さんの投稿
@@ -64,13 +63,32 @@
                     @endif
                     <div class="mb-3">
                         <div class="fw-bold text-dark mb-1">投稿内容：</div>
-                        <p class="mb-0 text-break">{{ $post->content }}</p>
+                        @if(Auth::check() && Auth::id() !== $post->user_id)
+                            <p class="mb-0 text-break">{{ $post->content }}</p>
+                        @endif
+                    </div>
+                    <div class="mt-3">
+                        <p class="text-muted small">
+                            いいね {{ $post->likes_count }} 件
+                        </p>
+                        @if(Auth::user()->isLiking($post->id))
+                            <form method="POST" action="{{ route('posts.unlike', $post->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-outline-danger">いいね解除</button>
+                            </form>
+                        @else
+                            <form method="POST" action="{{ route('posts.like', $post->id) }}">
+                                @csrf
+                                <button class="btn btn-sm btn-outline-primary">いいね</button>
+                            </form>
+                        @endif
                     </div>
                     @if ($post->tags->isNotEmpty())
                         <div class="mt-1">
                             @foreach ($post->tags as $tag)
                                 <a href="{{ route('posts.index', ['keyword' => $tag->name]) }}"
-                                style="font-size: 0.85rem; color: #6c757d; margin-right: 0.5em; text-decoration: none;">
+                                    style="font-size: 0.85rem; color: #6c757d; margin-right: 0.5em; text-decoration: none;">
                                     #{{ $tag->name }}
                                 </a>
                             @endforeach
@@ -141,7 +159,7 @@
                             </label>
                         @endfor
                     </div>
-                    <button type="submit" class="btn btn-primary mt-2">レビューする</button>
+                    <button type="submit" class="btn btn-outline-primary mt-2">レビューする</button>
                 </form>
             @else
                 <p class="text-muted">※レビューするにはログインが必要です。</p>
