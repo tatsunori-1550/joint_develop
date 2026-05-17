@@ -24,6 +24,11 @@ class Post extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'post_tag', 'post_id', 'tag_id')
@@ -34,6 +39,12 @@ class Post extends Model
     public function deleteReviews()
     {
         $this->reviews()->delete();
+    }
+
+    // 投稿と関連するいいねをすべて削除する
+    public function deleteLikes()
+    {
+        $this->likes()->delete();
     }
     
     // 投稿と関連する画像を削除する

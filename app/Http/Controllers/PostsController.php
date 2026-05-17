@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Post;
 use App\Review;
 use App\Tag;
@@ -32,18 +31,24 @@ class PostsController extends Controller
             'tag' => Tag::where('name', $keyword)->first(),
             'posts' => $posts,
         ];
+
         return view('welcome', $data);
     }
 
     public function show($id)
     {
-        $post = Post::with(['user', 'tags'])->findOrFail($id);
+        $post = Post::with(['user', 'tags'])
+            ->withCount(['likes'])
+            ->findOrFail($id);
+
         $reviews = $post->reviews()
             ->with('user')
             ->orderBy('id', 'desc')
             ->paginate(10);
+            
         $latestReview = Review::latestReview($post);
         $hasReviewed = false;
+
         if (Auth::check() && Auth::id() !== $post->user_id) {
             $hasReviewed = Review::hasReviewed(Auth::user(), $post);
         }
@@ -54,6 +59,7 @@ class PostsController extends Controller
             'hasReviewed' => $hasReviewed,
         ];
         $data += Review::reviewCounts($post);
+
         return view('posts.show', $data);
     }
 
@@ -65,6 +71,7 @@ class PostsController extends Controller
             'posts' => $posts,
             'keyword' => $keyword,
         ];
+
         return view('posts.create', $data);
     }
 
@@ -75,6 +82,7 @@ class PostsController extends Controller
         $post->address   = $request->input('address');
         $post->content   = $request->input('content');
         $post->user_id   = Auth::id();
+
         if ($request->hasFile('image')) {
         $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
         $post->image = $uploadedFileUrl;
@@ -84,9 +92,11 @@ class PostsController extends Controller
         $post->save();
         $rawTags = $request->input('tags');
         $tagNames = Tag::parseTagNames($rawTags);
+
         if (!empty($tagNames)) {
             Tag::syncToPost($post, $tagNames);
         }
+
         return back()->with('flash_message', '投稿しました。ありがとう！');
     }
 
@@ -107,19 +117,23 @@ class PostsController extends Controller
         $post->content   = $request->input('content');
         $post->lat = $request->input('lat');
         $post->lng = $request->input('lng');
+
         if ($request->hasFile('image')) {
         $post->deleteImage(); // これがローカルファイル削除なら、不要になるかも
         $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
         $post->image = $uploadedFileUrl;
-    }
+        }
+
         $post->save();
         $rawTags = $request->input('tags');
         $tagNames = Tag::parseTagNames($rawTags);
+
         if (!empty($tagNames)) {
             Tag::syncToPost($post, $tagNames);
         } else {
             $post->detachTags();
         }
+
         return redirect()->route('posts.show', $post->id)
             ->with('flash_message', '投稿を更新しました');
     }
@@ -127,13 +141,16 @@ class PostsController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
+
         if (Auth::id() !== $post->user_id) {
             abort(403);
         }
+
         $post->deleteImage();
         $post->deleteReviews();
         $post->detachTags();
         $post->delete();
+
         return redirect()->route('posts.index')
             ->with('flash_message', '投稿を削除しました');
     }
@@ -141,15 +158,19 @@ class PostsController extends Controller
     private function basePostQuery()
     {
         return Post::with([
-                'user',
-                'tags',
-                'reviews' => function ($query) {
-                    $query->whereNull('deleted_at');
-                }
-            ])
-            ->withCount(['reviews' => function ($query) {
+            'user',
+            'tags',
+            'reviews' => function ($query) {
                 $query->whereNull('deleted_at');
-            }])
-            ->orderBy('id', 'desc');
+            },
+            'likes',
+        ])
+        ->withCount([
+            'reviews' => function ($query) {
+                $query->whereNull('deleted_at');
+            },
+            'likes',
+        ])
+        ->orderBy('id', 'desc');
     }
 }
